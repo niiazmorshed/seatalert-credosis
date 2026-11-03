@@ -44,6 +44,9 @@ export function handle<C>(fn: Handler<C>): Handler<C> {
         const fields = Object.keys(err.keyValue).join(", ");
         return fail(409, "CONFLICT", `A record with the same ${fields} already exists`);
       }
+      if ((err as Error).name === "MongooseServerSelectionError") {
+        return fail(503, "SERVICE_UNAVAILABLE", "Database is unavailable, try again shortly");
+      }
       console.error(err); // full error goes to the server log, never to the client
       return fail(500, "INTERNAL_ERROR", "Something went wrong");
     }
