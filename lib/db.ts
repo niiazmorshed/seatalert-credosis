@@ -1,10 +1,18 @@
 import mongoose from "mongoose";
 
+// Every document is returned to clients as { id, ...fields } instead of { _id, __v, ...fields }.
+mongoose.set("toJSON", {
+  versionKey: false,
+  transform: (_doc, ret: Record<string, unknown>) => {
+    ret.id = String(ret._id);
+    delete ret._id;
+  },
+});
+
 // Vercel runs each API route as a serverless function. Module state can survive
 // between invocations, so we cache the connection promise on globalThis and
 // reuse it instead of opening a new connection on every request.
 declare global {
-  // eslint-disable-next-line no-var
   var mongooseConn: Promise<typeof mongoose> | undefined;
 }
 
