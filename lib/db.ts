@@ -4,8 +4,8 @@ import mongoose from "mongoose";
 mongoose.set("toJSON", {
   versionKey: false,
   transform: (_doc, ret: Record<string, unknown>) => {
-    ret.id = String(ret._id);
-    delete ret._id;
+    const { _id, ...rest } = ret;
+    return { id: String(_id), ...rest };
   },
 });
 
