@@ -2,6 +2,7 @@
 
 A small backend demo that watches train and bus ticket availability in Bangladesh and alerts users when seats open, so they can **buy the ticket themselves**. Built for the Credosis Backend Engineer Intern (CRM) Phase 02.
 
+- **GitHub:** https://github.com/niiazmorshed/seatalert-credosis
 - **Live demo:** _add Vercel URL_
 - **API docs (Scalar):** _add Vercel URL_/docs
 
@@ -164,7 +165,7 @@ So `mock_inventory` plays the role of the ticket site. The checker reads seat co
 
 ## Run locally
 
-Requirements: Node.js 20 or newer and a MongoDB instance (local or Atlas).
+Requirements: Node.js 20 or newer and a MongoDB Atlas cluster. The free M0 tier is enough. Allow your IP address under Network Access in Atlas.
 
 ```bash
 npm install
@@ -180,7 +181,7 @@ Open http://localhost:3000/docs to try every endpoint in Scalar.
 
 | Name | Required | Description |
 |---|---|---|
-| `MONGODB_URI` | yes | MongoDB connection string, e.g. `mongodb://127.0.0.1:27017/seatalert` |
+| `MONGODB_URI` | yes | MongoDB Atlas connection string, e.g. `mongodb+srv://USER:PASSWORD@CLUSTER_HOST/seatalert` |
 | `ADMIN_KEY` | yes | Secret for the admin endpoints, sent as the `x-admin-key` header |
 
 ## Demo flow

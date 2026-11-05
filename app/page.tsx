@@ -1,5 +1,4 @@
-// Replace with the public GitHub repo URL once it exists.
-const REPO_URL = "https://github.com/your-username/seatalert-bd";
+const REPO_URL = "https://github.com/niiazmorshed/seatalert-credosis";
 
 const steps = [
   {
