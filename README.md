@@ -3,8 +3,8 @@
 A small backend demo that watches train and bus ticket availability in Bangladesh and alerts users when seats open, so they can **buy the ticket themselves**. Built for the Credosis Backend Engineer Intern (CRM) Phase 02.
 
 - **GitHub:** https://github.com/niiazmorshed/seatalert-credosis
-- **Live demo:** _add Vercel URL_
-- **API docs (Scalar):** _add Vercel URL_/docs
+- **Live demo:** https://seatalert-credosis.vercel.app
+- **API docs (Scalar):** https://seatalert-credosis.vercel.app/docs
 
 ## The problem
 
