@@ -181,7 +181,7 @@ Open http://localhost:3000/docs to try every endpoint in Scalar.
 
 | Name | Required | Description |
 |---|---|---|
-| `MONGODB_URI` | yes | MongoDB Atlas connection string, e.g. `mongodb+srv://USER:PASSWORD@CLUSTER_HOST/seatalert` |
+| `MONGODB_URI` | yes | MongoDB Atlas connection string, e.g. `mongodb+srv://USER:PASSWORD@CLUSTER_HOST/`. The app always uses the `seatalert` database, whatever the URI says. |
 | `ADMIN_KEY` | yes | Secret for the admin endpoints, sent as the `x-admin-key` header |
 
 ## Demo flow
