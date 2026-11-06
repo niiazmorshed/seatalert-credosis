@@ -2,7 +2,6 @@ import { NextResponse, type NextRequest } from "next/server";
 import { ZodError, type ZodType } from "zod";
 import { connectDB } from "./db";
 
-// Thrown by route handlers for expected failures (404, 401, ...).
 export class ApiError extends Error {
   constructor(
     public status: number,
@@ -12,8 +11,6 @@ export class ApiError extends Error {
     super(message);
   }
 }
-
-// Every response in the API has one of these two shapes.
 export function ok(data: unknown, status = 200) {
   return NextResponse.json({ success: true, data }, { status });
 }
@@ -27,8 +24,6 @@ export function fail(status: number, code: string, message: string, details?: un
 
 type Handler<C> = (req: NextRequest, ctx: C) => Promise<Response>;
 
-// Wraps a route handler: connects to the DB, then turns any thrown error into
-// the standard error response. Route handlers never need their own try/catch.
 export function handle<C>(fn: Handler<C>): Handler<C> {
   return async (req, ctx) => {
     try {
@@ -47,13 +42,12 @@ export function handle<C>(fn: Handler<C>): Handler<C> {
       if ((err as Error).name === "MongooseServerSelectionError") {
         return fail(503, "SERVICE_UNAVAILABLE", "Database is unavailable, try again shortly");
       }
-      console.error(err); // full error goes to the server log, never to the client
+      console.error(err); 
       return fail(500, "INTERNAL_ERROR", "Something went wrong");
     }
   };
 }
 
-// MongoDB raises code 11000 when a unique index is violated.
 function isDuplicateKey(err: unknown): err is { keyValue: Record<string, unknown> } {
   return typeof err === "object" && err !== null && (err as { code?: number }).code === 11000;
 }

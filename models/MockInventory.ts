@@ -1,7 +1,6 @@
 import { Schema, model, models, type InferSchemaType } from "mongoose";
 
-// Stands in for the real ticket website. The checker reads availability from
-// here, and the admin "simulate release" endpoint writes to it.
+
 const mockInventorySchema = new Schema({
   source: { type: String, required: true },
   from: { type: String, required: true },
@@ -19,4 +18,5 @@ mockInventorySchema.index(
 
 export type MockInventoryDoc = InferSchemaType<typeof mockInventorySchema>;
 export const MockInventory =
-  models.MockInventory || model("MockInventory", mockInventorySchema, "mock_inventory");
+  models.MockInventory ||
+  model("MockInventory", mockInventorySchema, "mock_inventory");

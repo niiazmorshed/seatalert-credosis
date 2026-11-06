@@ -10,8 +10,7 @@ const notificationSchema = new Schema({
   sentAt: { type: Date, default: Date.now },
 });
 
-// The database guarantees one notification per watch per snapshot,
-// so running the checker twice can never alert the same user twice.
+
 notificationSchema.index({ watchId: 1, snapshotId: 1 }, { unique: true });
 
 export type NotificationDoc = InferSchemaType<typeof notificationSchema>;

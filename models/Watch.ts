@@ -14,8 +14,6 @@ const watchSchema = new Schema(
   { timestamps: true },
 );
 
-// A user can only have one ACTIVE watch per route/date/class.
-// Soft-deleted watches (active: false) do not count, so they can re-create it later.
 watchSchema.index(
   { userId: 1, source: 1, from: 1, to: 1, travelDate: 1, seatClass: 1 },
   { unique: true, partialFilterExpression: { active: true } },

@@ -2,18 +2,13 @@ import { z } from "zod";
 import { extendZodWithOpenApi } from "@asteasolutions/zod-to-openapi";
 import { SEAT_CLASSES, SOURCES, STATIONS } from "./constants";
 
-// Adds .openapi() to every Zod schema so the same schemas drive both
-// request validation and the generated API docs.
 extendZodWithOpenApi(z);
-
-// ---------- building blocks ----------
 
 export const objectId = z
   .string()
   .regex(/^[0-9a-fA-F]{24}$/, "Must be a valid 24-character ObjectId")
   .openapi({ example: "665f1c2e8b3a4d001c9f1a2b" });
 
-// Today's date as YYYY-MM-DD in Bangladesh time, no matter where the server runs.
 export function todayInDhaka(): string {
   return new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Dhaka" });
 }
@@ -23,10 +18,15 @@ const MAX_DAYS_AHEAD = 30;
 export const travelDate = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}$/, "Must be in YYYY-MM-DD format")
-  .refine((d) => new Date(`${d}T00:00:00Z`).toISOString().slice(0, 10) === d, "Not a real date")
+  .refine(
+    (d) => new Date(`${d}T00:00:00Z`).toISOString().slice(0, 10) === d,
+    "Not a real date",
+  )
   .refine((d) => d >= todayInDhaka(), "Travel date cannot be in the past")
   .refine(
-    (d) => (Date.parse(d) - Date.parse(todayInDhaka())) / 86_400_000 <= MAX_DAYS_AHEAD,
+    (d) =>
+      (Date.parse(d) - Date.parse(todayInDhaka())) / 86_400_000 <=
+      MAX_DAYS_AHEAD,
     `Travel date must be within the next ${MAX_DAYS_AHEAD} days`,
   )
   .openapi({ example: "2026-11-20" });
@@ -40,13 +40,19 @@ const routeFields = {
 };
 
 const differentStations = (d: { from: string; to: string }) => d.from !== d.to;
-const differentStationsMsg = { message: "from and to must be different stations", path: ["to"] };
-
-// ---------- request schemas ----------
+const differentStationsMsg = {
+  message: "from and to must be different stations",
+  path: ["to"],
+};
 
 export const CreateUserBody = z
   .object({
-    name: z.string().trim().min(1).max(100).openapi({ example: "Niaz Morshed" }),
+    name: z
+      .string()
+      .trim()
+      .min(1)
+      .max(100)
+      .openapi({ example: "Niaz Morshed" }),
     email: z.email().openapi({ example: "niaz@example.com" }),
     phone: z
       .string()
@@ -72,8 +78,6 @@ export const ReleaseSeatsBody = z
 export const UserIdQuery = z.object({ userId: objectId });
 export const IdParam = z.object({ id: objectId });
 
-// ---------- response schemas (docs only) ----------
-
 const timestamps = {
   createdAt: z.string().openapi({ example: "2026-11-03T10:00:00.000Z" }),
   updatedAt: z.string().openapi({ example: "2026-11-03T10:00:00.000Z" }),
@@ -95,7 +99,9 @@ export const SeatStatus = z
     checkedAt: z.string().openapi({ example: "2026-11-03T10:00:00.000Z" }),
   })
   .nullable()
-  .openapi("SeatStatus", { description: "Latest snapshot for the route, or null if never checked" });
+  .openapi("SeatStatus", {
+    description: "Latest snapshot for the route, or null if never checked",
+  });
 
 export const WatchResponse = z
   .object({
@@ -107,9 +113,9 @@ export const WatchResponse = z
   })
   .openapi("Watch");
 
-export const WatchWithStatusResponse = WatchResponse.extend({ latestStatus: SeatStatus }).openapi(
-  "WatchWithStatus",
-);
+export const WatchWithStatusResponse = WatchResponse.extend({
+  latestStatus: SeatStatus,
+}).openapi("WatchWithStatus");
 
 export const NotificationResponse = z
   .object({
@@ -119,7 +125,12 @@ export const NotificationResponse = z
     snapshotId: objectId,
     channel: z.enum(["log", "email"]),
     status: z.enum(["sent", "failed"]),
-    message: z.string().openapi({ example: "12 SNIGDHA seat(s) opened on Railway Dhaka → Chattogram for 2026-11-20" }),
+    message: z
+      .string()
+      .openapi({
+        example:
+          "12 SNIGDHA seat(s) opened on Railway Dhaka → Chattogram for 2026-11-20",
+      }),
     sentAt: z.string(),
   })
   .openapi("Notification");

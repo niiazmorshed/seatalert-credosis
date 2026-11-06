@@ -14,7 +14,6 @@ const daysFromNow = (n: number) => {
   return d.toLocaleDateString("en-CA", { timeZone: "Asia/Dhaka" });
 };
 
-// Some rows have 0 seats on purpose, so the demo can "release" them and trigger an alert.
 const inventory = [
   { source: "Railway", from: "Dhaka", to: "Chattogram", travelDate: daysFromNow(7), seatClass: "SNIGDHA", trainOrBus: "Subarna Express", availableSeats: 0 },
   { source: "Railway", from: "Dhaka", to: "Chattogram", travelDate: daysFromNow(7), seatClass: "SHOVAN_CHAIR", trainOrBus: "Subarna Express", availableSeats: 42 },

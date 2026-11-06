@@ -16,8 +16,8 @@ export function pickKey(obj: RouteKey): RouteKey {
   return { source, from, to, travelDate, seatClass };
 }
 
-// The core decision. Seats "opened" when they went from none to some.
-// `previous` is null when the route has never been checked before.
+
+
 export function seatsOpened(previous: number | null, current: number): boolean {
   return current > 0 && (previous === null || previous === 0);
 }
@@ -29,7 +29,6 @@ export function latestSnapshot(key: RouteKey) {
 export async function runChecker() {
   const watches = await Watch.find({ active: true });
 
-  // Group watches by route so each route is checked once, however many people watch it.
   const byRoute = new Map<string, typeof watches>();
   for (const w of watches) {
     const k = JSON.stringify(pickKey(w));
@@ -70,7 +69,6 @@ export async function runChecker() {
         });
         notificationsCreated++;
       } catch (err) {
-        // Unique index (watchId, snapshotId): already notified for this snapshot.
         if ((err as { code?: number }).code !== 11000) throw err;
       }
     }

@@ -16,8 +16,7 @@ import {
   WatchWithStatusResponse,
 } from "./schemas";
 
-// The OpenAPI spec is built from the same Zod schemas that validate requests,
-// so the docs at /docs can never drift from what the API actually accepts.
+
 
 const registry = new OpenAPIRegistry();
 
