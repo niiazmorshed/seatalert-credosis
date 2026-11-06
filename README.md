@@ -100,6 +100,7 @@ scripts/seed.ts   demo data
 | Method | Path | Auth | Description | Success | Errors |
 |---|---|---|---|---|---|
 | POST | `/api/users` | none | Create a user | 201 | 400, 409 |
+| GET | `/api/users` | `x-admin-key` | List all users, newest first | 200 | 401 |
 | POST | `/api/watches` | none | Start watching a route | 201 | 400, 404, 409 |
 | GET | `/api/watches?userId=` | none | User's watches with latest seat status | 200 | 400 |
 | DELETE | `/api/watches/:id` | none | Stop a watch (soft delete) | 200 | 400, 404 |

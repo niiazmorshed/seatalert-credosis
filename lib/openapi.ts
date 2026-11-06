@@ -79,6 +79,19 @@ registry.registerPath({
 });
 
 registry.registerPath({
+  method: "get",
+  path: "/api/users",
+  tags: ["Users"],
+  summary: "List all users (admin key)",
+  description: "Admin only, because it returns every user's email and phone number.",
+  security: [{ AdminKey: [] }],
+  responses: {
+    200: success(z.array(UserResponse), "Users, newest first"),
+    401: error("Missing or invalid admin key"),
+  },
+});
+
+registry.registerPath({
   method: "post",
   path: "/api/watches",
   tags: ["Watches"],
